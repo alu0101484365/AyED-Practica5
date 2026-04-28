@@ -57,7 +57,7 @@ template<class T> const int rpn_t<T>::evaluate(queue_l_t<char>& q) {
 }
 
 template<class T> void rpn_t<T>::operate_(const char c) {
-  assert(c == '+' || c == '-' || c == '*' || c == '/' || c == 'r' || c == 'c' || c == 'l' || c == '^');  
+  assert(c == '+' || c == '-' || c == '*' || c == '/' || c == 'r' || c == 'c' || c == 'l' || c == '^' || c == 'm');  
   int resultado;
   switch(c) {
     case 'r': {
@@ -80,6 +80,25 @@ template<class T> void rpn_t<T>::operate_(const char c) {
       assert(operando > 0);
       std::cout << "   Sacamos de la pila el operando: " << operando << std::endl;
       resultado = log2(operando);
+      break;
+    }
+    case 'm': {
+      int operando1 = stack_.top();
+      std::cout << "   Sacamos de la pila un operando: " << operando1 << std::endl;
+      stack_.pop();
+      int operando2 = stack_.top();
+      std::cout << "   Sacamos de la pila otro operando: " << operando2 << std::endl;
+      stack_.pop();
+      int operando3 = stack_.top();
+      std::cout << "   Sacamos de la pila el último operando: " << operando3 << std::endl;
+      stack_.pop();
+      if ((operando1 < operando2) && (operando1 < operando3)) {
+        resultado = operando1;
+      } else if ((operando2 < operando1) && (operando2 < operando3)){
+        resultado = operando2;
+      } else {
+        resultado = operando3;
+      }
       break;
     }
     default: {
@@ -111,7 +130,6 @@ template<class T> void rpn_t<T>::operate_(const char c) {
       break;
     }
   }
-
   std::cout << "   Metemos en la pila el resultado: " << resultado << std::endl;
   stack_.push(resultado);
 }
